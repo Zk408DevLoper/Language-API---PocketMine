@@ -25,7 +25,7 @@ This API can be used to check player language in-game
  
  // We can now check if its eng, rus, pt etc.
  
- if($playerLang == "english){
+ if($playerLang == "english"){
     // Do something
 ?>
 ```
