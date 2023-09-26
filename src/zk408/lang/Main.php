@@ -14,15 +14,19 @@ use pocketmine\command\Command;
 use pocketmine\Player;
 
 class Main extends PluginBase implements Listener {
-    
+    //Pocketmine stuff
     public function onEnable() {
         @mkdir($this->getDataFolder());
         $this->database = new Config($this->getDataFolder() . "Lang.yml", Config::YAML);
         
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
     }
+
+    public function onDisable() {
+        $this->database->save();
+    }
     
-    public function onJoin(PlayerJoinEvent $event){
+/*    public function onJoin(PlayerJoinEvent $event){
         $player = $event->getPlayer();
         if($this->database->exists(strtolower($player->getName()))){
             // Do nothing
@@ -30,7 +34,7 @@ class Main extends PluginBase implements Listener {
             $this->database->set(strtolower($player->getName()), "english");
             $this->database->save();
         }
-    }
+    } */
     
     public function onCommand(CommandSender $sender, Command $cmd, $label, array $args){
         if($cmd->getName() == "setlang"){           
@@ -39,7 +43,7 @@ class Main extends PluginBase implements Listener {
              }
              
              if(empty($args)){
-                 return $sender->sendMessage("/setlang (lang)");
+                 return $sender->sendMessage("/setlang (lang)\nLang list: eng, tag, pt, rus");
               }
               
               if(isset($args[0])){
@@ -69,8 +73,14 @@ class Main extends PluginBase implements Listener {
              return $sender->sendMessage("§aYour lang: §f{$this->getPlayerLanguage($sender)}");
          }
     }         
-    
+
+    //Plugin api stuff
     public function getPlayerLanguage(Player $player){
-       return $this->database->get(strtolower($player->getName()));
+       return $this->database->get(strtolower($player->getName()), "english"); //"english" is the default language
+    }
+
+    
+    public function setPlayerLanguage(Player $player, string $language){
+       $this->database->set(strtolower($player->getName()), $language);
     }       
 }
