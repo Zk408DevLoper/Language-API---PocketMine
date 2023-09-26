@@ -27,6 +27,10 @@ This API can be used to check player language in-game
  
  if($playerLang == "english"){
     // Do something
+ }
+
+ //If you want, you can set the player's language using
+ $this->lang->setPlayerLanguage($player, "language here"); //Replace "language here" to the language you want to define
 ?>
 ```
 
